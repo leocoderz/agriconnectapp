@@ -1,5 +1,5 @@
 # TensorFlow and Dependencies
-tensorflow==2.17.0
+tensorflow
 tensorboard>=2.17,<2.18
 tensorboard-data-server==0.7.2
 flatbuffers==24.3.25
@@ -10,19 +10,19 @@ wrapt==1.16.0
 libclang==18.1.1
 
 # Protobuf - Adjusted to fit most dependencies
-protobuf>=3.20.3,<5.0.0
+protobuf
 
 
 # Google Libraries
-google-api-core==2.23.0
+google-api-core
 google-api-python-client==2.153.0
 google-auth==2.36.0
 google-auth-httplib2==0.2.0
-google-generativeai==0.8.3
+google-generativeai
 googleapis-common-protos==1.66.0
 google-ai-generativelanguage==0.6.10
-grpcio==1.68.0
-grpcio-status==1.68.0
+grpcio
+grpcio-status
 
 # Protobuf Utilities
 proto-plus==1.25.0
