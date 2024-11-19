@@ -10,7 +10,8 @@ wrapt==1.16.0
 libclang==18.1.1
 
 # Protobuf - Adjusted to fit most dependencies
-protobuf>=3.20.3,<4.24.0
+protobuf>=3.20.3,<5.0.0
+
 
 # Google Libraries
 google-api-core==2.23.0
