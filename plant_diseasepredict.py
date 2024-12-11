@@ -22,10 +22,11 @@ def main():
     st.markdown("Upload a clear image of a plant leaf to detect possible diseases.")
 
     # Upload Image Section
-    plant_image = st.file_uploader("📤 Upload an image (JPG only):", type="jpg")
-    if plant_image:
-        # Displaying the uploaded image
-        st.image(plant_image, caption="Uploaded Image", use_column_width=True)
+plant_image = st.file_uploader("📤 Upload an image (JPG only):", type="jpg")
+if plant_image:
+    # Displaying the uploaded image
+    st.image(plant_image, caption="Uploaded Image", use_container_width=True)
+
     
     # Predict Button
     if st.button("🔍 Predict Disease"):
