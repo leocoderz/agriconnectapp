@@ -5,7 +5,6 @@ from PIL import Image
 from keras.models import load_model
 import openai
 import os
-from openai.error import AuthenticationError, OpenAIError
 
 # Load the Model
 model = load_model('plant_disease_model.h5')
@@ -87,12 +86,11 @@ def get_recommendations(plant_disease):
             fertilizer = fertilizer.strip()
 
         return treatment, fertilizer
-    except AuthenticationError:
+    except openai.error.AuthenticationError:
         return "Unable to authenticate with OpenAI. Check your API key.", ""
-    except OpenAIError as e:
-        return f"An OpenAI error occurred: {str(e)}", ""
     except Exception as e:
-        return f"An unexpected error occurred: {str(e)}", ""
+        return f"An error occurred: {str(e)}", ""
 
 if __name__ == "__main__":
     main()
+
