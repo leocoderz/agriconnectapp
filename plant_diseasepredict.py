@@ -5,12 +5,13 @@ from PIL import Image
 from keras.models import load_model
 import openai
 import os
+from openai.error import AuthenticationError, OpenAIError
 
 # Load the Model
 model = load_model('plant_disease_model.h5')
 
 # Set OpenAI API Key securely
-openai.api_key = os.getenv("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")  # Ensure this environment variable is set
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Ensure this environment variable is set
 
 # Name of Classes
 CLASS_NAMES = ('Tomato-Bacterial_spot', 'Potato-Early_blight', 'Corn-Common_rust')
@@ -86,11 +87,12 @@ def get_recommendations(plant_disease):
             fertilizer = fertilizer.strip()
 
         return treatment, fertilizer
-    except openai.error.AuthenticationError:
+    except AuthenticationError:
         return "Unable to authenticate with OpenAI. Check your API key.", ""
+    except OpenAIError as e:
+        return f"An OpenAI error occurred: {str(e)}", ""
     except Exception as e:
-        return f"An error occurred: {str(e)}", ""
+        return f"An unexpected error occurred: {str(e)}", ""
 
 if __name__ == "__main__":
     main()
-
