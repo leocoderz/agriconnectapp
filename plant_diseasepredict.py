@@ -10,7 +10,11 @@ import os
 model = load_model('plant_disease_model.h5')
 
 # Set Google Generative AI Key securely (Ensure Google Cloud credentials are set up)
-genai.credentials.api_key = os.getenv("AIzaSyDAQJROTnyvmCgiZfzFbkAnaVvOTN5OicI")  # Ensure this environment variable is set
+api_key = os.getenv("GOOGLE_API_KEY")  # Retrieve the API key from the environment variable
+if not api_key:
+    raise ValueError("API key for Google Generative AI not found in environment variables.")
+
+genai.credentials.api_key = api_key  # Assign the retrieved API key
 
 # Name of Classes
 CLASS_NAMES = ('Tomato-Bacterial_spot', 'Potato-Early_blight', 'Corn-Common_rust')
