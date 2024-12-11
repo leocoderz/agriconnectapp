@@ -3,14 +3,14 @@ import numpy as np
 import streamlit as st
 from PIL import Image
 from keras.models import load_model
-import openai
+import google.generativeai as genai
 import os
 
 # Load the Model
 model = load_model('plant_disease_model.h5')
 
-# Set OpenAI API Key securely
-openai.api_key = os.getenv("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")  # Ensure this environment variable is set
+# Set Google Generative AI Key securely (Ensure Google Cloud credentials are set up)
+genai.credentials.api_key = os.getenv("AIzaSyDAQJROTnyvmCgiZfzFbkAnaVvOTN5OicI")  # Ensure this environment variable is set
 
 # Name of Classes
 CLASS_NAMES = ('Tomato-Bacterial_spot', 'Potato-Early_blight', 'Corn-Common_rust')
@@ -59,15 +59,15 @@ def main():
         else:
             st.error("Please upload an image before proceeding.")
 
-# Function to get recommendations from ChatGPT
+# Function to get recommendations from Google's Generative AI
 def get_recommendations(plant_disease):
-    # Prompt for ChatGPT
+    # Prompt for Generative AI
     prompt = f"I have detected {plant_disease}. Can you recommend a treatment or remedy to cure this plant disease? Also, which fertilizer can be used to avoid the disease in the future?"
 
     try:
-        # Generate response from ChatGPT
-        completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+        # Generate response from Google Generative AI
+        response = genai.ChatMessage.create(
+            model="chat-bison",  # You can change the model as per your requirement
             messages=[
                 {"role": "system", "content": "You are an agricultural assistant, skilled in providing recommendations for plant diseases and fertilizers."},
                 {"role": "user", "content": prompt}
@@ -75,19 +75,19 @@ def get_recommendations(plant_disease):
         )
 
         # Extracting treatment and fertilizer recommendations
-        response = completion.choices[0].message.content.strip()
-        treatment = response
+        response_text = response['text'].strip()
+        treatment = response_text
         fertilizer = ""
 
         # Split response if fertilizer recommendation is included
-        if "Fertilizer Recommendation:" in response:
-            treatment, fertilizer = response.split("Fertilizer Recommendation:")
+        if "Fertilizer Recommendation:" in response_text:
+            treatment, fertilizer = response_text.split("Fertilizer Recommendation:")
             treatment = treatment.strip()
             fertilizer = fertilizer.strip()
 
         return treatment, fertilizer
-    except openai.error.AuthenticationError:
-        return "Unable to authenticate with OpenAI. Check your API key.", ""
+    except genai.errors.AuthenticationError:
+        return "Unable to authenticate with Google Generative AI. Check your API key.", ""
     except Exception as e:
         return f"An error occurred: {str(e)}", ""
 
