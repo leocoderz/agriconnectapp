@@ -88,8 +88,6 @@ def get_recommendations(plant_disease):
         return treatment, fertilizer
     except genai.errors.AuthenticationError:
         return "Unable to authenticate with Google Generative AI. Check your API key.", ""
-    except genai.errors.InvalidRequestError as e:
-        return f"Request error: {str(e)}", ""
     except Exception as e:
         return f"An error occurred: {str(e)}", ""
 
