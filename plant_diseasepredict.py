@@ -5,11 +5,15 @@ from PIL import Image
 from keras.models import load_model
 import openai
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
 
 # Load the Model
 model = load_model('plant_disease_model.h5')
 
-# Set OpenAI API Key securely
+# Set OpenAI API Key securely from environment variables
 openai.api_key = os.getenv("OPENAI_API_KEY")  # Ensure this environment variable is set
 
 # Name of Classes
@@ -86,8 +90,15 @@ def get_recommendations(plant_disease):
             fertilizer = fertilizer.strip()
 
         return treatment, fertilizer
-    except openai.error.AuthenticationError:
-        return "Unable to authenticate with OpenAI. Check your API key.", ""
+
+    except openai.APIConnectionError as e:
+        return "The server could not be reached. Please check your network connection.", ""
+    except openai.RateLimitError as e:
+        return "Too many requests. Please try again later.", ""
+    except openai.APIStatusError as e:
+        return f"Error {e.status_code}: {e.response}. Please try again later.", ""
+    except openai.APIError as e:
+        return f"An unexpected error occurred: {str(e)}", ""
     except Exception as e:
         return f"An error occurred: {str(e)}", ""
 
