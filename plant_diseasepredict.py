@@ -65,23 +65,21 @@ def get_recommendations(plant_disease):
     prompt = f"I have detected {plant_disease}. Can you recommend a treatment or remedy to cure this plant disease? Also, which fertilizer can be used to avoid the disease in the future?"
 
     try:
-        # Generate response from ChatGPT
-        completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are an agricultural assistant, skilled in providing recommendations for plant diseases and fertilizers."},
-                {"role": "user", "content": prompt}
-            ]
+        # Generate response from OpenAI GPT-3.5 or GPT-4 model (use 'text-davinci-003' for regular models)
+        response = openai.Completion.create(
+            model="text-davinci-003",  # Use the correct model for text generation
+            prompt=prompt,
+            max_tokens=150
         )
 
         # Extracting treatment and fertilizer recommendations
-        response = completion.choices[0].message.content.strip()
-        treatment = response
+        result = response.choices[0].text.strip()
+        treatment = result
         fertilizer = ""
 
         # Split response if fertilizer recommendation is included
-        if "Fertilizer Recommendation:" in response:
-            treatment, fertilizer = response.split("Fertilizer Recommendation:")
+        if "Fertilizer Recommendation:" in result:
+            treatment, fertilizer = result.split("Fertilizer Recommendation:")
             treatment = treatment.strip()
             fertilizer = fertilizer.strip()
 
