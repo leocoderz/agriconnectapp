@@ -4,13 +4,13 @@ import streamlit as st
 from PIL import Image
 from keras.models import load_model
 import openai
-import os
+
+# OpenAI API Key
+api_key = "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"  # Directly set your OpenAI API key here
+openai.api_key = api_key  # Assign the API key to openai
 
 # Load the Model
 model = load_model('plant_disease_model.h5')
-
-# Set OpenAI API Key securely from environment variables
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Ensure your environment variable is set correctly
 
 # Name of Classes
 CLASS_NAMES = ('Tomato-Bacterial_spot', 'Potato-Early_blight', 'Corn-Common_rust')
