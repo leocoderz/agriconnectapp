@@ -5,16 +5,12 @@ from PIL import Image
 from keras.models import load_model
 import openai
 import os
-from dotenv import load_dotenv
-
-# Load environment variables from the .env file
-load_dotenv()
 
 # Load the Model
 model = load_model('plant_disease_model.h5')
 
 # Set OpenAI API Key securely from environment variables
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Ensure this environment variable is set
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Make sure this environment variable is set
 
 # Name of Classes
 CLASS_NAMES = ('Tomato-Bacterial_spot', 'Potato-Early_blight', 'Corn-Common_rust')
