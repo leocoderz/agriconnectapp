@@ -10,7 +10,7 @@ import os
 model = load_model('plant_disease_model.h5')
 
 # Set OpenAI API Key securely from environment variables
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Make sure this environment variable is set
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Ensure your environment variable is set correctly
 
 # Name of Classes
 CLASS_NAMES = ('Tomato-Bacterial_spot', 'Potato-Early_blight', 'Corn-Common_rust')
@@ -65,9 +65,9 @@ def get_recommendations(plant_disease):
     prompt = f"I have detected {plant_disease}. Can you recommend a treatment or remedy to cure this plant disease? Also, which fertilizer can be used to avoid the disease in the future?"
 
     try:
-        # Generate response from OpenAI GPT-3.5 or GPT-4 model
+        # Generate response from OpenAI GPT-4 model (or GPT-3.5)
         response = openai.ChatCompletion.create(
-            model="gpt-4",  # Use the correct model for your needs
+            model="gpt-4",  # You can also use "gpt-3.5-turbo" if you prefer
             messages=[
                 {"role": "system", "content": "You are an agricultural assistant, skilled in providing recommendations for plant diseases and fertilizers."},
                 {"role": "user", "content": prompt}
