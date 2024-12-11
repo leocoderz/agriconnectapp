@@ -10,7 +10,7 @@ import os
 model = load_model('plant_disease_model.h5')
 
 # Set OpenAI API Key securely from environment variables
-openai.api_key = os.getenv("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")  # Make sure this environment variable is set
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Make sure this environment variable is set
 
 # Name of Classes
 CLASS_NAMES = ('Tomato-Bacterial_spot', 'Potato-Early_blight', 'Corn-Common_rust')
@@ -59,21 +59,23 @@ def main():
         else:
             st.error("Please upload an image before proceeding.")
 
-# Function to get recommendations from ChatGPT
+# Function to get recommendations from OpenAI Chat models (new API interface)
 def get_recommendations(plant_disease):
-    # Prompt for ChatGPT
+    # Prompt for OpenAI Chat model
     prompt = f"I have detected {plant_disease}. Can you recommend a treatment or remedy to cure this plant disease? Also, which fertilizer can be used to avoid the disease in the future?"
 
     try:
-        # Generate response from OpenAI GPT-3.5 or GPT-4 model (use 'text-davinci-003' for regular models)
-        response = openai.Completion.create(
-            model="text-davinci-003",  # Use the correct model for text generation
-            prompt=prompt,
-            max_tokens=150
+        # Generate response from OpenAI GPT-3.5 or GPT-4 model
+        response = openai.ChatCompletion.create(
+            model="gpt-4",  # Use the correct model for your needs
+            messages=[
+                {"role": "system", "content": "You are an agricultural assistant, skilled in providing recommendations for plant diseases and fertilizers."},
+                {"role": "user", "content": prompt}
+            ]
         )
 
         # Extracting treatment and fertilizer recommendations
-        result = response.choices[0].text.strip()
+        result = response['choices'][0]['message']['content'].strip()
         treatment = result
         fertilizer = ""
 
