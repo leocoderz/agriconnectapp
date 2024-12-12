@@ -84,19 +84,4 @@ def get_recommendations(plant_disease):
             treatment, fertilizer = result.split("Fertilizer Recommendation:")
             treatment = treatment.strip()
             fertilizer = fertilizer.strip()
-
         return treatment, fertilizer
-
-    except openai.APIConnectionError as e:
-        return "The server could not be reached. Please check your network connection.", ""
-    except openai.RateLimitError as e:
-        return "Too many requests. Please try again later.", ""
-    except openai.APIStatusError as e:
-        return f"Error {e.status_code}: {e.response}. Please try again later.", ""
-    except openai.APIError as e:
-        return f"An unexpected error occurred: {str(e)}", ""
-    except Exception as e:
-        return f"An error occurred: {str(e)}", ""
-
-if __name__ == "__main__":
-    main()
