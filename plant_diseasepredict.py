@@ -84,4 +84,4 @@ def get_recommendations(plant_disease):
             treatment, fertilizer = result.split("Fertilizer Recommendation:")
             treatment = treatment.strip()
             fertilizer = fertilizer.strip()
-        return treatment, fertilizer
+    return treatment, fertilizer
