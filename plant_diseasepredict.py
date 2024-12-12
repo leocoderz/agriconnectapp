@@ -58,30 +58,36 @@ def main():
                 st.error("Please upload an image before proceeding.")
 
 # Function to get recommendations from OpenAI Chat models (new API interface)
+# Function to get recommendations from OpenAI Chat models (new API interface)
 def get_recommendations(plant_disease):
     # Prompt for OpenAI Chat model
     prompt = f"I have detected {plant_disease}. Can you recommend a treatment or remedy to cure this plant disease? Also, which fertilizer can be used to avoid the disease in the future?"
 
-    # Generate response from OpenAI GPT-4 model (or GPT-3.5)
-    response = openai.ChatCompletion.create(
-        model="gpt-4",  # You can also use "gpt-3.5-turbo" if you prefer
-        messages=[
-            {"role": "system", "content": "You are an agricultural assistant, skilled in providing recommendations for plant diseases and fertilizers."},
-            {"role": "user", "content": prompt}
-        ]
-    )
-    # Extracting treatment and fertilizer recommendations
-    result = response['choices'][0]['message']['content'].strip()
-    treatment = result
-    fertilizer = ""
+    try:
+        # Generate response from OpenAI GPT-4 model (or GPT-3.5)
+        response = openai.ChatCompletion.create(
+            model="gpt-4",  # You can also use "gpt-3.5-turbo" if you prefer
+            messages=[
+                {"role": "system", "content": "You are an agricultural assistant, skilled in providing recommendations for plant diseases and fertilizers."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        # Extracting treatment and fertilizer recommendations
+        result = response['choices'][0]['message']['content'].strip()
+        treatment = result
+        fertilizer = ""
 
-    # Split response if fertilizer recommendation is included
-    if "Fertilizer Recommendation:" in result:
-        treatment, fertilizer = result.split("Fertilizer Recommendation:")
-        treatment = treatment.strip()
-        fertilizer = fertilizer.strip()
+        # Split response if fertilizer recommendation is included
+        if "Fertilizer Recommendation:" in result:
+            treatment, fertilizer = result.split("Fertilizer Recommendation:")
+            treatment = treatment.strip()
+            fertilizer = fertilizer.strip()
 
-    return treatment, fertilizer
+        return treatment, fertilizer
+
+    except openai.error.OpenAIError as e:
+        print(f"OpenAI API Error: {str(e)}")
+        return "An error occurred while fetching recommendations.", ""
 
 if __name__ == "__main__":
     main()
